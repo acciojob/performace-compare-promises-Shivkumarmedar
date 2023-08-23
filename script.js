@@ -13,3 +13,35 @@ const apiUrls = [
 ];
 
 // You can write your code here
+const apiUrls = [
+  'url1', 'url2', 'url3', /* Add more API URLs here */
+];
+
+function fetchData(url) {
+  return fetch(url)
+    .then(response => response.json())
+    .catch(error => console.error(error));
+}
+
+function measurePerformance() {
+  const startAll = performance.now();
+  const allPromises = apiUrls.map(url => fetchData(url));
+  Promise.all(allPromises)
+    .then(() => {
+      const endAll = performance.now();
+      const timeTakenAll = endAll - startAll;
+      document.getElementById('output-all').textContent = timeTakenAll.toFixed(2) + ' ms';
+    });
+
+  const startAny = performance.now();
+  const anyPromises = apiUrls.map(url => fetchData(url));
+  Promise.any(anyPromises)
+    .then(() => {
+      const endAny = performance.now();
+      const timeTakenAny = endAny - startAny;
+      document.getElementById('output-any').textContent = timeTakenAny.toFixed(2) + ' ms';
+    });
+}
+
+measurePerformance();
+
